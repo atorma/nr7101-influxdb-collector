@@ -37,6 +37,8 @@ password=my-password
 interval=5000
 bucket=nr7101
 measurement=status
+ping_host=google.com
+ping_timeout=1
 ```
 
 Using environment variables (see [https://pypi.org/project/influxdb-client](https://pypi.org/project/influxdb-client) 
@@ -51,6 +53,8 @@ INFLUXDB_V2_URL=http://localhost:8086 \
  NR7101_PASSWORD=my-password \
  COLLECTOR_BUCKET=nr7101 \
  COLLECTOR_MEASUREMENT=status \
+ COLLECTOR_PING_HOST=google.com \
+ COLLECTOR_PING_TIMEOUT=1 \
  nr7101-collector
 ```
 
