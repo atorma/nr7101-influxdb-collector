@@ -1,0 +1,39 @@
+version: '3.5'
+services:
+  influxdb:
+    container_name: nr7101-collector-influxdb
+    image: influxdb:1.8.6-alpine
+    ports:
+      - 8086:8086
+    volumes:
+      - influxdb:/var/lib/influxdb
+
+  influxdb_start:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      - influxdb
+    command: 'influxdb:8086'
+
+  influxdb_init:
+    image: influxdb:1.8.6-alpine
+    restart: 'no'
+    depends_on:
+      - influxdb_start
+    command: ['influx', '-host', 'influxdb', '-execute', 'CREATE DATABASE "nr7101"']
+
+
+  grafana:
+    container_name: nr7101-collector-grafana
+    build: ./grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana:/var/lib/grafana
+    depends_on:
+      - influxdb_start
+
+volumes:
+  influxdb:
+    name: nr7101-collector-influxdb
+  grafana:
+    name: nr7101-collector-grafana

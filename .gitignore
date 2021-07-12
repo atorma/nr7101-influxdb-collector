@@ -1,0 +1,7 @@
+__pycache__
+.venv
+venv
+.nr7101.cookie
+*.egg-info/
+.idea
+config.ini
