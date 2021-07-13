@@ -8,6 +8,7 @@ from .config import CollectorConfig
 
 logger = logging.getLogger(__name__)
 
+
 class Collector:
     def __init__(self, nr7101_client: NR7101, influxdb_client: InfluxDBClient, config: CollectorConfig):
         self.nr7101_client = nr7101_client
@@ -15,11 +16,12 @@ class Collector:
         self.influxdb_write_api = None
         self.config = config
         self.is_stopped = False
+        self.nr7101_session_key = None
 
     def run(self):
         self.is_stopped = False
         self.influxdb_write_api = self.influxdb_client.write_api(write_options=SYNCHRONOUS)
-        self.nr7101_client.login()
+        self.nr7101_session_key = self.nr7101_client.login()
 
         while True and not self.is_stopped:
             start_time_sec = time.time()
@@ -62,3 +64,5 @@ class Collector:
         self.is_stopped = True
         self.influxdb_write_api.flush()
         self.influxdb_write_api.close()
+        if self.nr7101_session_key:
+            self.nr7101_client.logout(self.nr7101_session_key)
