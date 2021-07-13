@@ -22,6 +22,9 @@ class Collector:
         self.is_stopped = False
         self.influxdb_write_api = self.influxdb_client.write_api(write_options=SYNCHRONOUS)
         self.nr7101_session_key = self.nr7101_client.login()
+        if not self.nr7101_session_key:
+            self.stop()
+            raise RuntimeError('NR7101 login failed')
 
         while True and not self.is_stopped:
             start_time_sec = time.time()
