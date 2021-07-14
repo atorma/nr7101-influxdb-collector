@@ -9,9 +9,10 @@ from .collector import Collector
 def cli():
     logging.basicConfig(level=logging.INFO)
 
+    logger = logging.getLogger(__name__)
+
     parser = argparse.ArgumentParser(description='NR7101 InfluxDB collector')
     parser.add_argument('--config-file', default=None)
-
     args = parser.parse_args()
 
     config = Config(args.config_file)
@@ -19,4 +20,8 @@ def cli():
     influxdb_client = InfluxDBClient(**config.influxdb)
     collector = Collector(nr7101_client, influxdb_client, config.collector)
 
-    collector.run()
+    try:
+        collector.run()
+    except KeyboardInterrupt:
+        influxdb_client.close()
+        logger.info('Stopped')

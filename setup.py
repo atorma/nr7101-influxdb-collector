@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='nr7101-influxdb-collector',
-    version='2.0.0',
+    version='2.1.0',
     description='Zyxel NR7101 InfluxDB Collector',
     author='Anssi Törmä',
     license='MIT',
@@ -11,7 +11,8 @@ setup(
     install_requires=[
         'ping3',
         'influxdb-client[ciso]',
-        'nr7101 @ git+https://github.com/pkorpine/nr7101.git'
+        'nr7101 @ git+https://github.com/pkorpine/nr7101.git',
+        'rx'
     ],
     entry_points={
         'console_scripts': ['nr7101-collector=collector.cli:cli'],

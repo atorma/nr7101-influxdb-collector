@@ -2,7 +2,8 @@
 
 ## Requirements
 
-InfluxDB version 1.8+ or 2.0+. See [InfluxDB 1.8 API compatibility](https://github.com/influxdata/influxdb-client-python#influxdb-18-api-compatibility).
+* Python 3.6+
+* InfluxDB version 1.8+ or 2.0+. See [InfluxDB 1.8 API compatibility](https://github.com/influxdata/influxdb-client-python#influxdb-18-api-compatibility).
 
 ## Installation
 
@@ -37,9 +38,13 @@ username=admin
 password=my-password
 
 [collector]
-interval=5000
 bucket=nr7101
 measurement=status
+interval=5000
+influxdb_max_retries=5
+influxdb_max_retry_time=180000
+influxdb_max_retry_delay=125000
+influxdb_exponential_base=2
 ping_host=google.com
 ping_timeout=1
 ```
@@ -85,9 +90,13 @@ Optional [default tags](https://github.com/influxdata/influxdb-client-python#def
 
 ### [collector]
 
-* `interval` / `COLLECTOR_INTERVAL`: Interval, in milliseconds, of data collection. Default is `5000`.
 * `bucket` / `COLLECTOR_BUCKET`: InfluxDB bucket name to store data in. Required.
   * See also [InfluxDB 1.8 API compatibility](https://github.com/influxdata/influxdb-client-python#influxdb-18-api-compatibility).
 * `measurement` / `COLLECTOR_MEASUREMENT`: InfluxDB measurement name. Required.
+* `interval` / `COLLECTOR_INTERVAL`: Interval, in milliseconds, of data collection. Default is `5000`.
+* `influxdb_max_retries` / `COLLECTOR_INFLUXDB_MAX_RETRIES`: See [https://github.com/influxdata/influxdb-client-python#batching](https://github.com/influxdata/influxdb-client-python#batching)
+* `influxdb_max_retry_time` / `COLLECTOR_INFLUXDB_MAX_RETRY_TIME`: See [https://github.com/influxdata/influxdb-client-python#batching](https://github.com/influxdata/influxdb-client-python#batching)  
+* `influxdb_max_retry_delay` / `COLLECTOR_INFLUXDB_MAX_RETRY_DELAY`: See [https://github.com/influxdata/influxdb-client-python#batching](https://github.com/influxdata/influxdb-client-python#batching)
+* `influxdb_exponential_base` / `COLLECTOR_INFLUXDB_EXPONENTIAL_BASE`: See [https://github.com/influxdata/influxdb-client-python#batching](https://github.com/influxdata/influxdb-client-python#batching)
 * `ping_host` / `COLLECTOR_PING_HOST`: Optional hostname for ping measurements. Default is `None` meaning ping is not measured.
 * `ping_timeout` / `COLLECTOR_PING_TIMEOUT`: Ping timeout in seconds. Default is `1`. 

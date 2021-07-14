@@ -18,14 +18,18 @@ class InfluxDbConfig(typing.TypedDict):
     verify_ssl: typing.Optional[bool]
     connection_pool_maxsize: typing.Optional[int]
     auth_basic: typing.Optional[bool]
-    profilers: typing.Optional[str]
+    profilers: typing.List[str]
     default_tags: dict
 
 
 class CollectorConfig(typing.TypedDict):
-    interval: int
     bucket: str
     measurement: str
+    interval: int
+    influxdb_max_retries: int
+    influxdb_max_retry_time: int
+    influxdb_max_retry_delay: int
+    influxdb_exponential_base: int
     ping_host: typing.Optional[str]
     ping_timeout: int
 
@@ -52,22 +56,26 @@ class Config:
         }
 
         self.collector: CollectorConfig = {
-            'interval': option('COLLECTOR_INTERVAL', default=5000, parser=int),
             'bucket': option('COLLECTOR_BUCKET', required=True),
             'measurement': option('COLLECTOR_MEASUREMENT', required=True),
+            'interval': option('COLLECTOR_INTERVAL', default=5000),
+            'influxdb_max_retries': option('COLLECTOR_INFLUXDB_MAX_RETRIES', default=5),
+            'influxdb_max_retry_time': option('COLLECTOR_INFLUXDB_MAX_RETRY_TIME', default=180_000),
+            'influxdb_max_retry_delay': option('COLLECTOR_INFLUXDB_MAX_RETRY_DELAY', default=125_000),
+            'influxdb_exponential_base': option('COLLECTOR_INFLUXDB_EXPONENTIAL_BASE', default=2),
             'ping_host': option('COLLECTOR_PING_HOST'),
-            'ping_timeout': option('COLLECTOR_PING_TIMEOUT', default=1, parser=int)
+            'ping_timeout': option('COLLECTOR_PING_TIMEOUT', default=1)
         }
 
         self.influxdb: InfluxDbConfig = {
             'url': option('INFLUXDB_V2_URL', required=True),
-            'org': option('INFLUXDB_V2_ORG'),
+            'org': option('INFLUXDB_V2_ORG', default='-'),
             'token': option('INFLUXDB_V2_TOKEN', default='auth-token'),
-            'timeout': option('INFLUXDB_V2_TIMEOUT', default=math.ceil(self.collector['interval'] * 0.75), parser=int),
-            'verify_ssl': option('INFLUXDB_V2_VERIFY_SSL', default=True, parser=parse_bool),
+            'timeout': option('INFLUXDB_V2_TIMEOUT', default=math.ceil(self.collector['interval'] * 0.75)),
+            'verify_ssl': option('INFLUXDB_V2_VERIFY_SSL', default=True),
             'connection_pool_maxsize': option('INFLUXDB_V2_CONNECTION_POOL_MAXSIZE', parser=int),
-            'auth_basic': option('INFLUXDB_V2_AUTH_BASIC', default=False, parser=parse_bool),
-            'profilers': option('INFLUXDB_V2_PROFILERS'),
+            'auth_basic': option('INFLUXDB_V2_AUTH_BASIC', default=False),
+            'profilers': option('INFLUXDB_V2_PROFILERS', default=[], parser=lambda value: value.split(',')),
             'default_tags': parse_default_tags(config)
         }
 
@@ -95,7 +103,16 @@ def parse_option_value(config: ConfigParser, env_var: str, **kwargs) -> typing.A
 
     default = kwargs.get('default', None)
     is_required = kwargs.get('required', False)
-    parse = kwargs.get('parser', str)
+    parse = kwargs.get('parser')
+    if default and not parse:
+        if isinstance(default, str):
+            parse = str
+        if isinstance(default, int):
+            parse = int
+        if isinstance(default, bool):
+            parse = parse_bool
+    else:
+        parse = str
 
     if not value and not is_required:
         return default

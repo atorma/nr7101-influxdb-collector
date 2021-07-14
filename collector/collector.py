@@ -1,11 +1,12 @@
 import logging
-import time
+import atexit
 import typing
-
+import rx
+from rx import operators as ops
+from datetime import timedelta, datetime
 from ping3 import ping
 from nr7101.nr7101 import NR7101
-from influxdb_client import InfluxDBClient, Point
-from influxdb_client.client.write_api import SYNCHRONOUS
+from influxdb_client import InfluxDBClient, Point, WriteOptions
 from .config import CollectorConfig
 
 logger = logging.getLogger(__name__)
@@ -50,57 +51,67 @@ class Collector:
     def __init__(self, nr7101_client: NR7101, influxdb_client: InfluxDBClient, config: CollectorConfig):
         self.nr7101_client = nr7101_client
         self.influxdb_client = influxdb_client
-        self.influxdb_write_api = None
         self.config = config
-        self.is_stopped = False
         self.nr7101_session_key = None
+        self.influxdb_write_api = self.influxdb_client.write_api(write_options=WriteOptions(
+            batch_size=1,
+            retry_interval=config['interval'],
+            max_retry_time=config['influxdb_max_retry_time'],
+            max_retries=config['influxdb_max_retries'],
+            max_retry_delay=config['influxdb_max_retry_delay'],
+            exponential_base=config['influxdb_exponential_base']
+        ))
 
     def run(self):
-        self.is_stopped = False
-        self.influxdb_write_api = self.influxdb_client.write_api(write_options=SYNCHRONOUS)
+        atexit.register(lambda: self.on_exit())
+
         self.nr7101_session_key = self.nr7101_client.login()
         if not self.nr7101_session_key:
-            self.stop()
             raise RuntimeError('NR7101 login failed')
 
-        while True and not self.is_stopped:
-            start_time_sec = time.time()
-            status = None
-            try:
-                status = self.nr7101_client.get_status()
-            except Exception as e:
-                logger.warning(f'Error when getting N7101 status: {e}')
+        influxdb_data_obs = rx \
+            .interval(period=timedelta(milliseconds=self.config['interval'])) \
+            .pipe(ops.map(lambda t: self._get_status()),
+                  ops.map(lambda status: (status, self._get_ping()) if status else None),
+                  ops.filter(lambda data: data is not None),
+                  ops.map(lambda data: self._get_data_point(data[0], data[1])))
 
-            ping_result = None
-            if self.config['ping_host']:
-                ping_result = ping(dest_addr=self.config['ping_host'], unit='ms', timeout=self.config['ping_timeout'])
+        self.influxdb_write_api.write(bucket=self.config['bucket'], record=influxdb_data_obs)
 
-            if status:
-                try:
-                    tag_dict = flatten_status_dict(nr7101_tags, status)
-                    field_dict = flatten_status_dict(nr7101_fields, status)
-                    point = Point(self.config['measurement'])
-                    for key, value in tag_dict.items():
-                        point = point.tag(key, value)
-                    for key, value in field_dict.items():
-                        point = point.field(key, value)
-                    if ping_result:
-                        point = point.tag('ping_host', self.config['ping_host']) \
-                            .field('ping_ms', ping_result)
-                    self.influxdb_write_api.write(bucket=self.config['bucket'], record=point)
-                except Exception as e:
-                    logger.warning(f'Error when saving status to InfluxDB: {e}')
+        influxdb_data_obs.run()
 
-            duration_sec = time.time() - start_time_sec
-            try:
-                time.sleep(max(0.0, self.config['interval'] / 1000 - duration_sec))
-            except KeyboardInterrupt:
-                self.stop()
+    def _get_status(self) -> typing.Union[None, dict]:
+        try:
+            return self.nr7101_client.get_status()
+        except Exception as e:
+            logger.warning(f'Error when getting N7101 status: {e}')
+            return None
 
-    def stop(self):
-        self.is_stopped = True
-        self.influxdb_write_api.flush()
-        self.influxdb_write_api.close()
+    def _get_ping(self) -> typing.Union[None, float]:
+        try:
+            return ping(dest_addr=self.config['ping_host'], unit='ms', timeout=self.config['ping_timeout'])
+        except Exception as e:
+            logger.warning(f'Error when pinging {self.config["ping_host"]}: {e}')
+            return None
+
+    def _get_data_point(self, status: dict, ping_result: typing.Union[float, None]) -> Point:
+        tag_dict = flatten_status_dict(nr7101_tags, status)
+        field_dict = flatten_status_dict(nr7101_fields, status)
+        point = Point(self.config['measurement']) \
+            .time(datetime.utcnow())
+        for key, value in tag_dict.items():
+            point = point.tag(key, value)
+        for key, value in field_dict.items():
+            point = point.field(key, value)
+        if ping_result:
+            point = point \
+                .tag('ping_host', self.config['ping_host']) \
+                .field('ping_ms', ping_result)
+        return point
+
+    def on_exit(self):
+        if self.influxdb_client:
+            self.influxdb_write_api.close()
         if self.nr7101_session_key:
             self.nr7101_client.logout(self.nr7101_session_key)
 
