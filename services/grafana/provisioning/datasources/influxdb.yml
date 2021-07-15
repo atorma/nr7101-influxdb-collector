@@ -1,7 +1,7 @@
 apiVersion: 1
 
 datasources:
-  - name: NR7101 InfluxDB
+  - name: NR7101
   - type: influxdb
   - url: http://influxdb:8086
   - database: nr7101

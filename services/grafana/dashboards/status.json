@@ -12,9 +12,10 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
+  "id": 14,
   "links": [],
   "panels": [
     {
@@ -26,6 +27,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
+      "datasource": "NR7101",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -120,7 +122,7 @@
       "timeShift": null,
       "title": "Current Band",
       "type": "singlestat",
-      "valueFontSize": "170%",
+      "valueFontSize": "100%",
       "valueMaps": [
         {
           "op": "=",
@@ -128,9 +130,10 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "first"
     },
     {
+      "datasource": "NR7101",
       "gridPos": {
         "h": 5,
         "w": 6,
@@ -145,12 +148,40 @@
             "last"
           ],
           "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
             "max": -70,
             "min": -110,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-red",
+                  "index": 0,
+                  "value": null
+                },
+                {
+                  "color": "dark-orange",
+                  "index": 1,
+                  "value": -100
+                },
+                {
+                  "color": "#EAB839",
+                  "index": 2,
+                  "value": -90
+                },
+                {
+                  "color": "dark-green",
+                  "index": 3,
+                  "value": -80
+                }
+              ]
+            },
             "unit": "none"
           },
-          "mappings": [],
-          "override": {},
+          "overrides": [],
           "thresholds": [
             {
               "color": "dark-red",
@@ -179,7 +210,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.2.4",
+      "pluginVersion": "6.6.2",
       "targets": [
         {
           "alias": "5G",
@@ -187,6 +218,8 @@
           "measurement": "status",
           "orderByTime": "ASC",
           "policy": "autogen",
+          "query": "SELECT mean(\"NSA_RSRP\") FROM \"autogen\".\"status\" WHERE $timeFilter",
+          "rawQuery": false,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -196,6 +229,10 @@
                   "NSA_RSRP"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mode"
               }
             ]
           ],
@@ -207,6 +244,8 @@
           "measurement": "status",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT mean(\"INTF_RSRP\") FROM \"status\" WHERE $timeFilter",
+          "rawQuery": false,
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -216,18 +255,23 @@
                   "INTF_RSRP"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mode"
               }
             ]
           ],
           "tags": []
         }
       ],
-      "timeFrom": null,
+      "timeFrom": "5m",
       "timeShift": null,
       "title": "RSRP",
       "type": "gauge"
     },
     {
+      "datasource": "NR7101",
       "gridPos": {
         "h": 5,
         "w": 6,
@@ -242,12 +286,40 @@
             "last"
           ],
           "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
             "max": -5,
             "min": -25,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-red",
+                  "index": 0,
+                  "value": null
+                },
+                {
+                  "color": "dark-orange",
+                  "index": 1,
+                  "value": -20
+                },
+                {
+                  "color": "#EAB839",
+                  "index": 2,
+                  "value": -15
+                },
+                {
+                  "color": "dark-green",
+                  "index": 3,
+                  "value": -10
+                }
+              ]
+            },
             "unit": "none"
           },
-          "mappings": [],
-          "override": {},
+          "overrides": [],
           "thresholds": [
             {
               "color": "dark-red",
@@ -276,7 +348,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.2.4",
+      "pluginVersion": "6.6.2",
       "targets": [
         {
           "alias": "5G",
@@ -293,6 +365,10 @@
                   "NSA_RSRQ"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mode"
               }
             ]
           ],
@@ -313,18 +389,23 @@
                   "INTF_RSRQ"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mode"
               }
             ]
           ],
           "tags": []
         }
       ],
-      "timeFrom": null,
+      "timeFrom": "5m",
       "timeShift": null,
       "title": "RSRQ",
       "type": "gauge"
     },
     {
+      "datasource": "NR7101",
       "gridPos": {
         "h": 5,
         "w": 6,
@@ -339,12 +420,40 @@
             "last"
           ],
           "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
             "max": 27,
             "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-red",
+                  "index": 0,
+                  "value": null
+                },
+                {
+                  "color": "dark-orange",
+                  "index": 1,
+                  "value": 1
+                },
+                {
+                  "color": "#EAB839",
+                  "index": 2,
+                  "value": 13
+                },
+                {
+                  "color": "dark-green",
+                  "index": 3,
+                  "value": 20
+                }
+              ]
+            },
             "unit": "none"
           },
-          "mappings": [],
-          "override": {},
+          "overrides": [],
           "thresholds": [
             {
               "color": "dark-red",
@@ -373,7 +482,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "6.2.4",
+      "pluginVersion": "6.6.2",
       "targets": [
         {
           "alias": "5G",
@@ -390,6 +499,10 @@
                   "NSA_SINR"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mode"
               }
             ]
           ],
@@ -410,13 +523,17 @@
                   "INTF_SINR"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mode"
               }
             ]
           ],
           "tags": []
         }
       ],
-      "timeFrom": null,
+      "timeFrom": "5m",
       "timeShift": null,
       "title": "SINR",
       "type": "gauge"
@@ -426,21 +543,23 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 0,
+      "fillGradient": 0,
       "gridPos": {
         "h": 10,
         "w": 12,
         "x": 0,
         "y": 5
       },
+      "hiddenSeries": false,
       "id": 2,
       "interval": "",
       "legend": {
         "avg": true,
         "current": false,
         "max": false,
-        "min": false,
+        "min": true,
         "show": true,
         "total": false,
         "values": true
@@ -449,7 +568,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
@@ -557,8 +678,8 @@
       "yaxes": [
         {
           "decimals": null,
-          "format": "short",
-          "label": "dBm",
+          "format": "dB",
+          "label": "",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -583,21 +704,23 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 0,
+      "fillGradient": 0,
       "gridPos": {
         "h": 10,
         "w": 12,
         "x": 12,
         "y": 5
       },
+      "hiddenSeries": false,
       "id": 9,
       "interval": "",
       "legend": {
         "avg": true,
         "current": false,
         "max": false,
-        "min": false,
+        "min": true,
         "show": true,
         "total": false,
         "values": true
@@ -606,7 +729,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
@@ -643,7 +768,7 @@
             [
               {
                 "params": [
-                  "NSA_RSRP"
+                  "NSA_RSRQ"
                 ],
                 "type": "field"
               },
@@ -680,7 +805,7 @@
             [
               {
                 "params": [
-                  "INTF_RSRP"
+                  "INTF_RSRQ"
                 ],
                 "type": "field"
               },
@@ -697,7 +822,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "RSRP",
+      "title": "RSRQ",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -714,8 +839,8 @@
       "yaxes": [
         {
           "decimals": null,
-          "format": "short",
-          "label": "dBm",
+          "format": "dB",
+          "label": "",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -740,14 +865,16 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 0,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 0,
         "y": 15
       },
+      "hiddenSeries": false,
       "id": 6,
       "interval": "",
       "legend": {
@@ -755,7 +882,7 @@
         "avg": true,
         "current": false,
         "max": false,
-        "min": false,
+        "min": true,
         "show": true,
         "total": false,
         "values": true
@@ -764,7 +891,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
@@ -897,21 +1026,23 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 0,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 12,
         "y": 15
       },
+      "hiddenSeries": false,
       "id": 4,
       "interval": "",
       "legend": {
         "avg": true,
         "current": false,
         "max": false,
-        "min": false,
+        "min": true,
         "show": true,
         "total": false,
         "values": true
@@ -920,7 +1051,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
@@ -990,8 +1123,8 @@
       },
       "yaxes": [
         {
-          "format": "short",
-          "label": "dB",
+          "format": "dB",
+          "label": "",
           "logBase": 1,
           "max": null,
           "min": null,
@@ -1016,20 +1149,22 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 0,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 0,
         "y": 24
       },
+      "hiddenSeries": false,
       "id": 16,
       "interval": "",
       "legend": {
         "avg": true,
         "current": false,
-        "max": false,
+        "max": true,
         "min": false,
         "show": true,
         "total": false,
@@ -1039,7 +1174,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
@@ -1050,13 +1187,19 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "ping",
+          "alias": "$tag_ping_host",
           "groupBy": [
             {
               "params": [
                 "$__interval"
               ],
               "type": "time"
+            },
+            {
+              "params": [
+                "ping_host"
+              ],
+              "type": "tag"
             },
             {
               "params": [
@@ -1132,33 +1275,37 @@
     },
     {
       "aliasColors": {},
-      "bars": true,
+      "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 0,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 12,
         "y": 24
       },
+      "hiddenSeries": false,
       "id": 17,
       "interval": "",
       "legend": {
         "avg": true,
         "current": false,
-        "max": false,
+        "max": true,
         "min": false,
         "show": true,
         "total": false,
         "values": true
       },
-      "lines": false,
+      "lines": true,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
@@ -1183,8 +1330,8 @@
           "measurement": "status",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"NSA_RSRP\") FROM \"autogen\".\"status\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": false,
+          "query": "SELECT derivative(\"BytesReceived\") FROM \"autogen\".\"status\" WHERE $timeFilter",
+          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1196,8 +1343,10 @@
                 "type": "field"
               },
               {
-                "params": [],
-                "type": "difference"
+                "params": [
+                  "10s"
+                ],
+                "type": "derivative"
               }
             ]
           ],
@@ -1209,8 +1358,8 @@
           "measurement": "status",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"NSA_RSRP\") FROM \"autogen\".\"status\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": false,
+          "query": "SELECT derivative(\"BytesSent\") FROM \"autogen\".\"status\" WHERE $timeFilter",
+          "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -1220,10 +1369,6 @@
                   "BytesSent"
                 ],
                 "type": "field"
-              },
-              {
-                "params": [],
-                "type": "difference"
               }
             ]
           ],
@@ -1235,8 +1380,8 @@
           "measurement": "status",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"NSA_RSRP\") FROM \"autogen\".\"status\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": false,
+          "query": "SELECT derivative(\"ErrorsReceived\") FROM \"autogen\".\"status\" WHERE $timeFilter",
+          "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
           "select": [
@@ -1261,8 +1406,8 @@
           "measurement": "status",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"NSA_RSRP\") FROM \"autogen\".\"status\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": false,
+          "query": "SELECT derivative(\"ErrorsSent\") FROM \"autogen\".\"status\" WHERE $timeFilter",
+          "rawQuery": true,
           "refId": "D",
           "resultFormat": "time_series",
           "select": [
@@ -1302,7 +1447,7 @@
       },
       "yaxes": [
         {
-          "format": "bytes",
+          "format": "Bps",
           "label": "",
           "logBase": 1,
           "max": null,
@@ -1311,7 +1456,7 @@
         },
         {
           "decimals": 0,
-          "format": "short",
+          "format": "pps",
           "label": "",
           "logBase": 1,
           "max": null,
@@ -1325,14 +1470,15 @@
       }
     }
   ],
-  "schemaVersion": 18,
+  "refresh": "",
+  "schemaVersion": 22,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {

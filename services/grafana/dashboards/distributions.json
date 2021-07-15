@@ -12,10 +12,11 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1626116829693,
+  "id": 15,
+  "iteration": 1626337671517,
   "links": [],
   "panels": [
     {
@@ -23,15 +24,17 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "description": "",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 0,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 2,
       "interval": "",
       "legend": {
@@ -48,7 +51,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
@@ -151,14 +156,16 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 12,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 4,
       "interval": "",
       "legend": {
@@ -175,7 +182,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
@@ -278,15 +287,17 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "description": "",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 0,
         "y": 9
       },
+      "hiddenSeries": false,
       "id": 15,
       "interval": "",
       "legend": {
@@ -303,14 +314,16 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "repeat": null,
       "repeatDirection": "v",
-      "repeatIteration": 1626116829693,
+      "repeatIteration": 1626337671517,
       "repeatPanelId": 2,
       "scopedVars": {
         "band": {
@@ -408,14 +421,16 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 12,
         "y": 9
       },
+      "hiddenSeries": false,
       "id": 16,
       "interval": "",
       "legend": {
@@ -432,14 +447,16 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "repeat": null,
       "repeatDirection": "v",
-      "repeatIteration": 1626116829693,
+      "repeatIteration": 1626337671517,
       "repeatPanelId": 4,
       "scopedVars": {
         "band": {
@@ -537,14 +554,16 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 0,
         "y": 18
       },
+      "hiddenSeries": false,
       "id": 6,
       "interval": "",
       "legend": {
@@ -561,7 +580,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
@@ -664,14 +685,16 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 12,
         "y": 18
       },
+      "hiddenSeries": false,
       "id": 7,
       "interval": "",
       "legend": {
@@ -688,7 +711,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
@@ -792,14 +817,16 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 0,
         "y": 27
       },
+      "hiddenSeries": false,
       "id": 17,
       "interval": "",
       "legend": {
@@ -816,14 +843,16 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "repeat": null,
       "repeatDirection": "v",
-      "repeatIteration": 1626116829693,
+      "repeatIteration": 1626337671517,
       "repeatPanelId": 6,
       "scopedVars": {
         "band": {
@@ -921,14 +950,16 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 12,
         "y": 27
       },
+      "hiddenSeries": false,
       "id": 18,
       "interval": "",
       "legend": {
@@ -945,14 +976,16 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "repeat": null,
       "repeatDirection": "v",
-      "repeatIteration": 1626116829693,
+      "repeatIteration": 1626337671517,
       "repeatPanelId": 7,
       "scopedVars": {
         "band": {
@@ -1051,14 +1084,16 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 0,
         "y": 36
       },
+      "hiddenSeries": false,
       "id": 3,
       "interval": "",
       "legend": {
@@ -1075,7 +1110,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
@@ -1178,14 +1215,16 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 12,
         "y": 36
       },
+      "hiddenSeries": false,
       "id": 5,
       "interval": "",
       "legend": {
@@ -1202,7 +1241,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
@@ -1305,14 +1346,16 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 0,
         "y": 45
       },
+      "hiddenSeries": false,
       "id": 19,
       "interval": "",
       "legend": {
@@ -1329,14 +1372,16 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "repeat": null,
       "repeatDirection": "v",
-      "repeatIteration": 1626116829693,
+      "repeatIteration": 1626337671517,
       "repeatPanelId": 3,
       "scopedVars": {
         "band": {
@@ -1434,14 +1479,16 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 12,
         "y": 45
       },
+      "hiddenSeries": false,
       "id": 20,
       "interval": "",
       "legend": {
@@ -1458,14 +1505,16 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "repeat": null,
       "repeatDirection": "v",
-      "repeatIteration": 1626116829693,
+      "repeatIteration": 1626337671517,
       "repeatPanelId": 5,
       "scopedVars": {
         "band": {
@@ -1563,14 +1612,16 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "NR7101 InfluxDB",
+      "datasource": "NR7101",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 0,
         "y": 54
       },
+      "hiddenSeries": false,
       "id": 14,
       "interval": "",
       "legend": {
@@ -1587,13 +1638,155 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {},
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "repeat": "band",
       "repeatDirection": "v",
+      "scopedVars": {
+        "band": {
+          "selected": false,
+          "text": "LTE_BC20",
+          "value": "LTE_BC20"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "$tag_INTF_Current_Band",
+          "groupBy": [
+            {
+              "params": [
+                "INTF_Current_Band"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "status",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "ping_ms"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "INTF_Current_Band",
+              "operator": "=~",
+              "value": "/^$band$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Ping $band",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "max": null,
+        "min": null,
+        "mode": "histogram",
+        "name": null,
+        "show": true,
+        "values": [
+          "total"
+        ]
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "NR7101",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 63
+      },
+      "hiddenSeries": false,
+      "id": 21,
+      "interval": "",
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeat": null,
+      "repeatDirection": "v",
+      "repeatIteration": 1626337671517,
+      "repeatPanelId": 14,
+      "scopedVars": {
+        "band": {
+          "selected": false,
+          "text": "LTE_BC3",
+          "value": "LTE_BC3"
+        }
+      },
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
@@ -1679,7 +1872,7 @@
       }
     }
   ],
-  "schemaVersion": 18,
+  "schemaVersion": 22,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -1692,7 +1885,7 @@
             "$__all"
           ]
         },
-        "datasource": "NR7101 InfluxDB",
+        "datasource": "NR7101",
         "definition": "show tag values with key = \"INTF_Current_Band\"",
         "hide": 0,
         "includeAll": true,
