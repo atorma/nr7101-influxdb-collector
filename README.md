@@ -7,7 +7,7 @@
 
 ## Installation
 
-Specific tag, e.g. v2.1.0
+Specific tag, e.g. v2.1.0:
 
 ```sh
 pip install git+https://github.com/atorma/nr7101-influxdb-collector.git@v2.1.0
