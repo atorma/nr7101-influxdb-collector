@@ -9,10 +9,10 @@ setup(
     url='https://github.com/atorma/nr7101-influxdb-collector',
     packages=find_packages(),
     install_requires=[
-        'ping3',
-        'influxdb-client[ciso]',
+        'ping3==2.9.1',
+        'influxdb-client[ciso]==1.19.0',
         'nr7101 @ git+https://github.com/pkorpine/nr7101.git@v1.3.0',
-        'rx'
+        'rx==3.2.0'
     ],
     entry_points={
         'console_scripts': ['nr7101-collector=collector.cli:cli'],
