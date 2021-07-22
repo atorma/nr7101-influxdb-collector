@@ -2,9 +2,9 @@ apiVersion: 1
 
 datasources:
   - name: NR7101
-  - type: influxdb
-  - url: http://influxdb:8086
-  - database: nr7101
-  - access: proxy
-  - editable: true
-  - isDefault: true
+    type: influxdb
+    url: http://influxdb:8086
+    database: nr7101
+    access: proxy
+    editable: true
+    isDefault: true
