@@ -5,6 +5,11 @@ datasources:
     type: influxdb
     url: http://influxdb:8086
     database: nr7101
+    user: nr7101
+    jsonData:
+      httpMethod: POST
+    secureJsonData:
+      password: nr7101password
     access: proxy
     editable: true
     isDefault: true
