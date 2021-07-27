@@ -1,5 +1,8 @@
 # Zyxel NR7101 InfluxDB collector
 
+Periodically gets the status of your NR7101 modem, pings a host of your choosing, 
+and stores the results in InfluxDB. Includes sample Grafana dashboards. 
+
 ## Requirements
 
 * Python 3.6+
@@ -7,10 +10,10 @@
 
 ## Installation
 
-Specific tag, e.g. v2.1.0:
+Specific tag, e.g. v2.2.0:
 
 ```sh
-pip install git+https://github.com/atorma/nr7101-influxdb-collector.git@v2.1.0
+pip install git+https://github.com/atorma/nr7101-influxdb-collector.git@v2.2.0
 ```
 
 Master version:
