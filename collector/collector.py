@@ -71,42 +71,48 @@ class Collector:
 
         influxdb_data_obs = rx \
             .interval(period=timedelta(milliseconds=self.config['interval'])) \
-            .pipe(ops.map(lambda t: self._get_status()),
-                  ops.map(lambda status: (status, self._get_ping()) if status else None),
-                  ops.filter(lambda data: data is not None),
-                  ops.map(lambda data: self._get_data_point(data[0], data[1])))
+            .pipe(ops.map(lambda i: (datetime.utcnow(), self._get_status())),
+                  ops.map(lambda data: (data[0], data[1], self._get_ping())),
+                  ops.map(lambda data: self._get_data_point(data[0], data[1], data[2])))
 
         self.influxdb_write_api.write(bucket=self.config['bucket'], record=influxdb_data_obs)
 
         influxdb_data_obs.run()
 
-    def _get_status(self) -> typing.Union[None, dict]:
+    def _get_status(self) -> typing.Optional[dict]:
         try:
             return self.nr7101_client.get_status()
         except Exception as e:
             logger.warning(f'Error when getting N7101 status: {e}')
             return None
 
-    def _get_ping(self) -> typing.Union[None, float]:
+    def _get_ping(self) -> typing.Optional[float]:
         try:
             return ping(dest_addr=self.config['ping_host'], unit='ms', timeout=self.config['ping_timeout'])
         except Exception as e:
             logger.warning(f'Error when pinging {self.config["ping_host"]}: {e}')
             return None
 
-    def _get_data_point(self, status: dict, ping_result: typing.Union[float, None]) -> Point:
-        tag_dict = flatten_status_dict(nr7101_tags, status)
-        field_dict = flatten_status_dict(nr7101_fields, status)
-        point = Point(self.config['measurement']) \
-            .time(datetime.utcnow())
-        for key, value in tag_dict.items():
-            point = point.tag(key, value)
-        for key, value in field_dict.items():
-            point = point.field(key, value)
+    def _get_data_point(self,
+                        utc_time: datetime,
+                        status: typing.Optional[dict],
+                        ping_result: typing.Optional[float]
+                        ) -> Point:
+        point = Point(self.config['measurement']).time(utc_time)
+
+        if status:
+            tag_dict = flatten_status_dict(nr7101_tags, status)
+            field_dict = flatten_status_dict(nr7101_fields, status)
+            for key, value in tag_dict.items():
+                point = point.tag(key, value)
+            for key, value in field_dict.items():
+                point = point.field(key, value)
+
         if ping_result:
             point = point \
                 .tag('ping_host', self.config['ping_host']) \
                 .field('ping_ms', ping_result)
+
         return point
 
     def on_exit(self):
@@ -114,6 +120,7 @@ class Collector:
             self.influxdb_write_api.close()
         if self.nr7101_session_key:
             self.nr7101_client.logout(self.nr7101_session_key)
+        logger.info('Collector exited')
 
 
 def flatten_status_dict(prop_names_dict, status) -> typing.Dict:
