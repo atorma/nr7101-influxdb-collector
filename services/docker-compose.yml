@@ -2,7 +2,7 @@ version: '3.5'
 services:
   influxdb:
     container_name: nr7101-collector-influxdb
-    image: arm64v8/influxdb:2.0.7
+    image: influxdb:2.0.7-alpine
     ports:
       - 8086:8086
     volumes:

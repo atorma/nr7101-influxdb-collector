@@ -16,11 +16,11 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 15,
-  "iteration": 1626944236828,
+  "iteration": 1627392522812,
   "links": [],
   "panels": [
     {
-      "datasource": "NR7101",
+      "datasource": "NR7101 Flux",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -28,6 +28,9 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
             "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
@@ -37,6 +40,8 @@
             },
             "lineWidth": 1
           },
+          "decimals": 1,
+          "displayName": "${__field.displayName}",
           "links": [],
           "mappings": [],
           "thresholds": {
@@ -52,7 +57,7 @@
               }
             ]
           },
-          "unit": "dB"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -66,13 +71,18 @@
       "interval": "",
       "links": [],
       "options": {
-        "bucketOffset": 0,
-        "bucketSize": 1,
-        "combine": false,
+        "barWidth": 0.9,
+        "groupWidth": 0.66,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom"
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "text": {},
+        "tooltip": {
+          "mode": "single"
         }
       },
       "pluginVersion": "8.0.6",
@@ -91,6 +101,7 @@
           "measurement": "status",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"nr7101\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"status\")\n  |> filter(fn: (r) => r[\"_field\"] == \"NSA_RSRP\")\n  |> filter(fn: (r) => exists r.INTF_Current_Band)\n  |> filter(fn: (r) => contains(value: r.INTF_Current_Band, set: ${band:json}))\n  |> keep(columns: [\"_time\", \"_value\", \"INTF_Current_Band\"])\n  |> toFloat()\n  |> histogram(bins: linearBins(start: -100.0, width: 1.0, count: 16, infinity: true), normalize: true)\n  |> difference()\n  |> map(fn:(r) => ({ r with le: string(v: r.le)}))\n  |> pivot(rowKey: [\"le\"], columnKey: [\"INTF_Current_Band\"], valueColumn: \"_value\")",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -108,23 +119,34 @@
               "key": "INTF_Current_Band",
               "operator": "=~",
               "value": "/^$band$/"
+            },
+            {
+              "condition": "AND",
+              "key": "INTF_Status",
+              "operator": "=",
+              "value": "Up"
             }
           ]
         }
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "5G RSRP",
-      "type": "histogram"
+      "title": "5G RSRP (dBm)",
+      "transformations": [],
+      "type": "barchart"
     },
     {
-      "datasource": "NR7101",
+      "datasource": "NR7101 Flux",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
             "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
@@ -134,6 +156,8 @@
             },
             "lineWidth": 1
           },
+          "decimals": 1,
+          "displayName": "${__field.displayName}",
           "links": [],
           "mappings": [],
           "thresholds": {
@@ -149,7 +173,7 @@
               }
             ]
           },
-          "unit": "dB"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -159,20 +183,25 @@
         "x": 12,
         "y": 0
       },
-      "id": 4,
+      "id": 15,
       "interval": "",
       "links": [],
       "options": {
-        "bucketOffset": 0,
-        "bucketSize": 1,
+        "barWidth": 0.9,
+        "groupWidth": 0.66,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom"
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "text": {},
+        "tooltip": {
+          "mode": "single"
         }
       },
       "pluginVersion": "8.0.6",
-      "repeat": null,
       "targets": [
         {
           "alias": "$tag_INTF_Current_Band",
@@ -187,13 +216,14 @@
           "measurement": "status",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"nr7101\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"status\")\n  |> filter(fn: (r) => r[\"_field\"] == \"INTF_RSRP\")\n  |> filter(fn: (r) => exists r.INTF_Current_Band)\n  |> filter(fn: (r) => contains(value: r.INTF_Current_Band, set: ${band:json}))\n  |> keep(columns: [\"_time\", \"_value\", \"INTF_Current_Band\"])\n  |> toFloat()\n  |> histogram(bins: linearBins(start: -95.0, width: 1.0, count: 19, infinity: true), normalize: true)\n  |> difference()\n  |> map(fn:(r) => ({ r with le: string(v: r.le)}))\n  |> pivot(rowKey: [\"le\"], columnKey: [\"INTF_Current_Band\"], valueColumn: \"_value\")",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "INTF_RSRP"
+                  "NSA_RSRP"
                 ],
                 "type": "field"
               }
@@ -204,23 +234,34 @@
               "key": "INTF_Current_Band",
               "operator": "=~",
               "value": "/^$band$/"
+            },
+            {
+              "condition": "AND",
+              "key": "INTF_Status",
+              "operator": "=",
+              "value": "Up"
             }
           ]
         }
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "4G RSRP",
-      "type": "histogram"
+      "title": "4G RSRP (dBm)",
+      "transformations": [],
+      "type": "barchart"
     },
     {
-      "datasource": "NR7101",
+      "datasource": "NR7101 Flux",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
             "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
@@ -230,6 +271,7 @@
             },
             "lineWidth": 1
           },
+          "displayName": "${__field.displayName}",
           "links": [],
           "mappings": [],
           "thresholds": {
@@ -255,19 +297,25 @@
         "x": 0,
         "y": 9
       },
-      "id": 6,
+      "id": 17,
       "interval": "",
       "links": [],
       "options": {
-        "bucketOffset": 0,
+        "barWidth": 0.9,
+        "groupWidth": 0.66,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom"
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "text": {},
+        "tooltip": {
+          "mode": "single"
         }
       },
       "pluginVersion": "8.0.6",
-      "repeat": null,
       "targets": [
         {
           "alias": "$tag_INTF_Current_Band",
@@ -282,13 +330,14 @@
           "measurement": "status",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"nr7101\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"status\")\n  |> filter(fn: (r) => r[\"_field\"] == \"NSA_SINR\")\n  |> filter(fn: (r) => exists r.INTF_Current_Band)\n  |> filter(fn: (r) => contains(value: r.INTF_Current_Band, set: ${band:json}))\n  |> keep(columns: [\"_time\", \"_value\", \"INTF_Current_Band\"])\n  |> toFloat()\n  |> histogram(bins: linearBins(start: 0.0, width: 10.0, count: 17, infinity: true), normalize: true)\n  |> difference()\n  |> map(fn:(r) => ({ r with le: string(v: r.le) }))\n  |> pivot(rowKey: [\"le\"], columnKey: [\"INTF_Current_Band\"], valueColumn: \"_value\")",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "NSA_SINR"
+                  "NSA_RSRP"
                 ],
                 "type": "field"
               }
@@ -299,6 +348,12 @@
               "key": "INTF_Current_Band",
               "operator": "=~",
               "value": "/^$band$/"
+            },
+            {
+              "condition": "AND",
+              "key": "INTF_Status",
+              "operator": "=",
+              "value": "Up"
             }
           ]
         }
@@ -306,16 +361,21 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "5G SINR",
-      "type": "histogram"
+      "transformations": [],
+      "type": "barchart"
     },
     {
-      "datasource": "NR7101",
+      "datasource": "NR7101 Flux",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
             "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
@@ -325,6 +385,7 @@
             },
             "lineWidth": 1
           },
+          "displayName": "${__field.displayName}",
           "links": [],
           "mappings": [],
           "thresholds": {
@@ -350,20 +411,25 @@
         "x": 12,
         "y": 9
       },
-      "id": 7,
+      "id": 18,
       "interval": "",
       "links": [],
       "options": {
-        "bucketOffset": 0,
-        "bucketSize": 1,
+        "barWidth": 0.9,
+        "groupWidth": 0.66,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom"
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "text": {},
+        "tooltip": {
+          "mode": "single"
         }
       },
       "pluginVersion": "8.0.6",
-      "repeat": null,
       "targets": [
         {
           "alias": "$tag_INTF_Current_Band",
@@ -378,13 +444,14 @@
           "measurement": "status",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "from(bucket: \"nr7101\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"status\")\n  |> filter(fn: (r) => r[\"_field\"] == \"INTF_SINR\")\n  |> filter(fn: (r) => exists r.INTF_Current_Band)\n  |> filter(fn: (r) => contains(value: r.INTF_Current_Band, set: ${band:json}))\n  |> keep(columns: [\"_time\", \"_value\", \"INTF_Current_Band\"])\n  |> toFloat()\n  |> histogram(bins: linearBins(start: 9.0, width: 1.0, count: 12, infinity: true), normalize: true)\n  |> difference()\n  |> map(fn:(r) => ({ r with le: string(v: r.le) }))\n  |> pivot(rowKey: [\"le\"], columnKey: [\"INTF_Current_Band\"], valueColumn: \"_value\")",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "INTF_SINR"
+                  "NSA_RSRP"
                 ],
                 "type": "field"
               }
@@ -395,6 +462,12 @@
               "key": "INTF_Current_Band",
               "operator": "=~",
               "value": "/^$band$/"
+            },
+            {
+              "condition": "AND",
+              "key": "INTF_Status",
+              "operator": "=",
+              "value": "Up"
             }
           ]
         }
@@ -402,16 +475,21 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "4G SINR",
-      "type": "histogram"
+      "transformations": [],
+      "type": "barchart"
     },
     {
-      "datasource": "NR7101",
+      "datasource": "NR7101 Flux",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
             "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
@@ -421,6 +499,7 @@
             },
             "lineWidth": 1
           },
+          "displayName": "${__field.displayName}",
           "links": [],
           "mappings": [],
           "thresholds": {
@@ -436,7 +515,7 @@
               }
             ]
           },
-          "unit": "dB"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -446,20 +525,25 @@
         "x": 0,
         "y": 18
       },
-      "id": 3,
+      "id": 20,
       "interval": "",
       "links": [],
       "options": {
-        "bucketOffset": 0,
-        "bucketSize": 1,
+        "barWidth": 0.9,
+        "groupWidth": 0.66,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom"
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "text": {},
+        "tooltip": {
+          "mode": "single"
         }
       },
       "pluginVersion": "8.0.6",
-      "repeat": null,
       "targets": [
         {
           "alias": "$tag_INTF_Current_Band",
@@ -473,14 +557,15 @@
           ],
           "measurement": "status",
           "orderByTime": "ASC",
-          "policy": "autogen",
+          "policy": "default",
+          "query": "from(bucket: \"nr7101\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"status\")\n  |> filter(fn: (r) => r[\"_field\"] == \"NSA_RSRQ\")\n  |> filter(fn: (r) => exists r.INTF_Current_Band)\n  |> filter(fn: (r) => contains(value: r.INTF_Current_Band, set: ${band:json}))\n  |> keep(columns: [\"_time\", \"_value\", \"INTF_Current_Band\"])\n  |> toFloat()\n  |> histogram(bins: linearBins(start: -17.0, width: 1.0, count: 8, infinity: true), normalize: true)\n  |> difference()\n  |> map(fn:(r) => ({ r with le: string(v: r.le)}))\n  |> pivot(rowKey: [\"le\"], columnKey: [\"INTF_Current_Band\"], valueColumn: \"_value\")",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "NSA_RSRQ"
+                  "NSA_RSRP"
                 ],
                 "type": "field"
               }
@@ -491,23 +576,34 @@
               "key": "INTF_Current_Band",
               "operator": "=~",
               "value": "/^$band$/"
+            },
+            {
+              "condition": "AND",
+              "key": "INTF_Status",
+              "operator": "=",
+              "value": "Up"
             }
           ]
         }
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "5G RSRQ",
-      "type": "histogram"
+      "title": "5G RSRQ (dBm)",
+      "transformations": [],
+      "type": "barchart"
     },
     {
-      "datasource": "NR7101",
+      "datasource": "NR7101 Flux",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
             "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
@@ -517,6 +613,7 @@
             },
             "lineWidth": 1
           },
+          "displayName": "${__field.displayName}",
           "links": [],
           "mappings": [],
           "thresholds": {
@@ -532,7 +629,7 @@
               }
             ]
           },
-          "unit": "dB"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -542,20 +639,25 @@
         "x": 12,
         "y": 18
       },
-      "id": 5,
+      "id": 21,
       "interval": "",
       "links": [],
       "options": {
-        "bucketOffset": 0,
-        "bucketSize": 1,
+        "barWidth": 0.9,
+        "groupWidth": 0.66,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom"
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "text": {},
+        "tooltip": {
+          "mode": "single"
         }
       },
       "pluginVersion": "8.0.6",
-      "repeat": null,
       "targets": [
         {
           "alias": "$tag_INTF_Current_Band",
@@ -569,14 +671,15 @@
           ],
           "measurement": "status",
           "orderByTime": "ASC",
-          "policy": "autogen",
+          "policy": "default",
+          "query": "from(bucket: \"nr7101\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"status\")\n  |> filter(fn: (r) => r[\"_field\"] == \"INTF_RSRQ\")\n  |> filter(fn: (r) => exists r.INTF_Current_Band)\n  |> filter(fn: (r) => contains(value: r.INTF_Current_Band, set: ${band:json}))\n  |> keep(columns: [\"_time\", \"_value\", \"INTF_Current_Band\"])\n  |> toFloat()\n  |> histogram(bins: linearBins(start: -18.0, width: 1.0, count: 10, infinity: true), normalize: true)\n  |> difference()\n  |> map(fn:(r) => ({ r with le: string(v: r.le)}))\n  |> pivot(rowKey: [\"le\"], columnKey: [\"INTF_Current_Band\"], valueColumn: \"_value\")",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "INTF_RSRQ"
+                  "NSA_RSRP"
                 ],
                 "type": "field"
               }
@@ -587,23 +690,34 @@
               "key": "INTF_Current_Band",
               "operator": "=~",
               "value": "/^$band$/"
+            },
+            {
+              "condition": "AND",
+              "key": "INTF_Status",
+              "operator": "=",
+              "value": "Up"
             }
           ]
         }
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "4G RSRQ",
-      "type": "histogram"
+      "title": "4G RSRQ (dBm)",
+      "transformations": [],
+      "type": "barchart"
     },
     {
-      "datasource": "NR7101",
+      "datasource": "NR7101 Flux",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
             "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
@@ -613,6 +727,7 @@
             },
             "lineWidth": 1
           },
+          "displayName": "${__field.displayName}",
           "links": [],
           "mappings": [],
           "thresholds": {
@@ -628,7 +743,7 @@
               }
             ]
           },
-          "unit": "ms"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -638,19 +753,25 @@
         "x": 0,
         "y": 27
       },
-      "id": 14,
+      "id": 22,
       "interval": "",
       "links": [],
       "options": {
-        "bucketOffset": 0,
+        "barWidth": 0.9,
+        "groupWidth": 0.66,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom"
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "text": {},
+        "tooltip": {
+          "mode": "single"
         }
       },
       "pluginVersion": "8.0.6",
-      "repeat": null,
       "targets": [
         {
           "alias": "$tag_INTF_Current_Band",
@@ -664,14 +785,15 @@
           ],
           "measurement": "status",
           "orderByTime": "ASC",
-          "policy": "autogen",
+          "policy": "default",
+          "query": "from(bucket: \"nr7101\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"status\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ping_ms\")\n  |> filter(fn: (r) => exists r.INTF_Current_Band)\n  |> filter(fn: (r) => contains(value: r.INTF_Current_Band, set: ${band:json}))\n  |> keep(columns: [\"_time\", \"_value\", \"INTF_Current_Band\"])\n  |> histogram(bins: linearBins(start: 20.0, width: 5.0, count: 15, infinity: true), normalize: true)\n  |> difference()\n  |> map(fn:(r) => ({ r with le: string(v: r.le)}))\n  |> pivot(rowKey: [\"le\"], columnKey: [\"INTF_Current_Band\"], valueColumn: \"_value\")",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "ping_ms"
+                  "NSA_RSRP"
                 ],
                 "type": "field"
               }
@@ -682,14 +804,21 @@
               "key": "INTF_Current_Band",
               "operator": "=~",
               "value": "/^$band$/"
+            },
+            {
+              "condition": "AND",
+              "key": "INTF_Status",
+              "operator": "=",
+              "value": "Up"
             }
           ]
         }
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Ping",
-      "type": "histogram"
+      "title": "Ping (ms)",
+      "transformations": [],
+      "type": "barchart"
     }
   ],
   "refresh": "",
@@ -732,7 +861,7 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-30d",
     "to": "now"
   },
   "timepicker": {
@@ -763,5 +892,5 @@
   "timezone": "",
   "title": "NR7101 Distributions",
   "uid": "sqxamAinz",
-  "version": 22
+  "version": 30
 }

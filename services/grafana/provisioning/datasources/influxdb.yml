@@ -12,4 +12,20 @@ datasources:
       password: nr7101password
     access: proxy
     editable: true
-    isDefault: true
+    isDefault: false
+
+  - name: NR7101 Flux
+    type: influxdb
+    url: http://influxdb:8086
+    database: nr7101
+    user: nr7101
+    jsonData:
+      httpMethod: POST
+      version: Flux
+      organization: nr7101
+      defaultBucket: nr7101
+    secureJsonData:
+      token: nr7101token
+    access: proxy
+    editable: true
+    isDefault: false
