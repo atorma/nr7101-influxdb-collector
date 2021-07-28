@@ -1,8 +1,9 @@
 from setuptools import setup, find_packages
+from collector.version import __version__
 
 setup(
     name='nr7101-influxdb-collector',
-    version='2.1.1',
+    version=__version__,
     description='Zyxel NR7101 InfluxDB Collector',
     author='Anssi Törmä',
     license='MIT',
