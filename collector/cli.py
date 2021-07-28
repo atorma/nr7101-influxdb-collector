@@ -8,7 +8,7 @@ from .version import __version__
 
 
 def cli():
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.INFO, force=True)
 
     logger = logging.getLogger(__name__)
 
