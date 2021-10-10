@@ -5,7 +5,7 @@ and stores the results in InfluxDB. Includes sample Grafana dashboards.
 
 ## Requirements
 
-* Python 3.6+
+* Python 3.8+
 * InfluxDB version 1.8+ or 2.0+. See [InfluxDB 1.8 API compatibility](https://github.com/influxdata/influxdb-client-python#influxdb-18-api-compatibility).
 
 ## Installation
