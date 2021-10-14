@@ -26,3 +26,7 @@ def cli():
     except KeyboardInterrupt:
         influxdb_client.close()
         logger.info('Stopped')
+
+
+if __name__ == '__main__':
+    cli()

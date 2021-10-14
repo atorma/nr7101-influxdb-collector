@@ -5,7 +5,7 @@ and stores the results in InfluxDB. Includes sample Grafana dashboards.
 
 ## Requirements
 
-* Python 3.8+
+* Python 3.8+ or Docker
 * InfluxDB version 1.8+ or 2.0+. See [InfluxDB 1.8 API compatibility](https://github.com/influxdata/influxdb-client-python#influxdb-18-api-compatibility).
 
 ## Installation
@@ -79,8 +79,17 @@ INFLUXDB_V2_URL=http://localhost:8086 \
 Using both environment properties and config file (the former take precedence):
 
 ```sh
- INFLUXDB_V2_TOKEN=my-token NR7101_PASSWORD=my-password nr7101-collector --config-file=/path/to/config.ini
+INFLUXDB_V2_TOKEN=my-token NR7101_PASSWORD=my-password nr7101-collector --config-file=/path/to/config.ini
 ```
+
+## Using Docker
+
+```sh
+docker build -t nr7101-collector .
+docker run -v /path/to/config.ini:/config.ini:ro nr7101-collector --config-file=/config.ini
+```
+
+With the `ping_host` option you may have to use the `--network host` Docker run option.
 
 ## Configuration 
 
