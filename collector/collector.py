@@ -1,5 +1,4 @@
 import logging
-import atexit
 import typing
 import rx
 from rx import operators as ops
@@ -50,10 +49,9 @@ nr7101_fields = {
 class Collector:
     def __init__(self, nr7101_client: NR7101, influxdb_client: InfluxDBClient, config: CollectorConfig):
         self.nr7101_client = nr7101_client
-        self.influxdb_client = influxdb_client
         self.config = config
         self.nr7101_session_key = None
-        self.influxdb_write_api = self.influxdb_client.write_api(write_options=WriteOptions(
+        self.influxdb_write_api = influxdb_client.write_api(write_options=WriteOptions(
             batch_size=1,
             retry_interval=config['interval'],
             max_retry_time=config['influxdb_max_retry_time'],
@@ -63,8 +61,6 @@ class Collector:
         ))
 
     def run(self):
-        atexit.register(lambda: self.on_exit())
-
         self.nr7101_session_key = self.nr7101_client.login()
         if not self.nr7101_session_key:
             raise RuntimeError('NR7101 login failed')
@@ -116,10 +112,12 @@ class Collector:
         return point
 
     def on_exit(self):
-        if self.influxdb_client:
+        if self.influxdb_write_api:
             self.influxdb_write_api.close()
+            logger.info('InfluxDB write api closed')
         if self.nr7101_session_key:
             self.nr7101_client.logout(self.nr7101_session_key)
+            logger.info('Logged out from NR7101')
         logger.info('Collector exited')
 
 
