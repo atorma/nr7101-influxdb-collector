@@ -66,9 +66,7 @@ class Collector:
 
         influxdb_data_obs = rx \
             .interval(period=timedelta(milliseconds=self.config['interval'])) \
-            .pipe(ops.map(lambda i: (datetime.utcnow(), self._get_status())),
-                  ops.map(lambda data: (data[0], data[1], self._get_ping())),
-                  ops.map(lambda data: self._get_data_point(data[0], data[1], data[2])))
+            .pipe(ops.map(lambda i: self._get_data_point()))
 
         self.influxdb_write_api.write(bucket=self.config['bucket'], record=influxdb_data_obs)
 
@@ -88,23 +86,22 @@ class Collector:
             logger.warning(f'Error when pinging %s', self.config["ping_host"], exc_info=e)
             return None
 
-    def _get_data_point(self,
-                        utc_time: datetime,
-                        status: typing.Optional[dict],
-                        ping_result: typing.Optional[float]
-                        ) -> Point:
-        point = Point(self.config['measurement']).time(utc_time)
+    def _get_data_point(self) -> Point:
+        point = Point(self.config['measurement']).time(datetime.utcnow())
+
+        status = self._get_status()
+        ping_result = self._get_ping()
 
         if status:
             tag_dict = flatten_status_dict(nr7101_tags, status)
             field_dict = flatten_status_dict(nr7101_fields, status)
             for key, value in tag_dict.items():
-                point = point.tag(key, value)
+                point.tag(key, value)
             for key, value in field_dict.items():
-                point = point.field(key, value)
+                point.field(key, value)
 
         if ping_result:
-            point = point \
+            point \
                 .tag('ping_host', self.config['ping_host']) \
                 .field('ping_ms', ping_result)
 
