@@ -78,14 +78,14 @@ class Collector:
         try:
             return self.nr7101_client.get_status()
         except Exception as e:
-            logger.warning(f'Error when getting N7101 status: {e}')
+            logger.warning(f'Error when getting N7101 status', exc_info=e)
             return None
 
     def _get_ping(self) -> typing.Optional[float]:
         try:
             return ping(dest_addr=self.config['ping_host'], unit='ms', timeout=self.config['ping_timeout'])
         except Exception as e:
-            logger.warning(f'Error when pinging {self.config["ping_host"]}: {e}')
+            logger.warning(f'Error when pinging %s', self.config["ping_host"], exc_info=e)
             return None
 
     def _get_data_point(self,
