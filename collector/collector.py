@@ -28,7 +28,6 @@ nr7101_fields = {
         'INTF_SINR',
         'INTF_Uplink_Bandwidth',
         'INTF_Downlink_Bandwidth',
-        'NSA_RSSI',
         'NSA_RSRP',
         'NSA_RSRQ',
         'NSA_SINR'
