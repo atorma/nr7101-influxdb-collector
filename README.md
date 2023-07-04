@@ -13,7 +13,7 @@ and stores the results in InfluxDB. Includes sample Grafana dashboards.
 Specific tag, e.g. v2.2.3:
 
 ```sh
-pip install git+https://github.com/atorma/nr7101-influxdb-collector.git@v2.2.1
+pip install git+https://github.com/atorma/nr7101-influxdb-collector.git@v2.2.3
 ```
 
 Master version:
